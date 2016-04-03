@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Safeguard Map</title>
+    <!--Bootstrap-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="static/css/jquery-jvectormap-2.0.2.css">
+    <link rel="stylesheet" type="text/css" href="static/css/styles.css">
+    
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="static/js/jquery-jvectormap-2.0.2.min.js"></script>
+    <script type="text/javascript" src="static/js/jquery-jvectormap-us-aea-en.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+</head>
+    
+<body class="page">
+    <nav class="navbar navbar-inverse" style="margin-bottom: 0px">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">Safeguard</a>
+        </div>
+        
+        <ul class="nav navbar-nav">
+            <li><a href="/">Map</a></li>
+            <li><a href="/register">Subscribe</a></li>
+            <li class="active"><a href="/view">View Safety Threats</a></li>
+        </ul>
+    </div>
+    </nav>
+    
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <br>
+            <div class="jumbotron" style="padding: 2em; border-radius: 10px">
+                <h2><b>View trends about safety threats in the US.</b></h2>
+            </div>
+        <div class="col-md-2"></div>
+    </div>
+    </div>
+        
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-3">
+            <div class="jumbotron" style="border-radius: 10px; padding: 1em; text-align: center">
+                <h3><b>Cities With Most Incidents</b></h3>
+                <hr>
+                
+                <table class="table table-hover text-center">
+                    <thead>
+                        <tr>
+                            <th>City</th>
+                            <th>Number of Incidents</th>
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                        {% for i in range(5) %}
+                        <tr>
+                            <td>{{ top_cities[i] }}</td>
+                            <td><span class="badge">{{ top_nums[i] }}</span></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="jumbotron" style="border-radius: 10px; padding: 1em; text-align: center">
+                <h3><b>Frequency of Each Incident</b></h3>
+                <hr>
+                
+                <table class="table table-hover text-center">
+                    <thead>
+                        <tr>
+                            <th>Type of Incident</th>
+                            <th>Frequency</th>
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                        {% for i in range(5) %}
+                        <tr>
+                            <td>{{ types[i] }}</td>
+                            <td><span class="badge">{{ num_incidents[i + 1] }}</span></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="jumbotron" style="border-radius: 10px; padding: 1em; text-align: center">
+                <h3><b>Total Incidents in the US in the Past Year</b></h3>
+                <hr>
+                
+                <div id="chart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+            </div>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+</body>
+    
+<script>
+    $(document).ready(function () {
+    $('#chart').highcharts({
+        title: {
+            text: '',
+            x: -20 //center
+        },
+        
+        xAxis: {
+            categories: ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar']
+        },
+        yAxis: {
+            title: {
+                text: 'Frequency (Thousands)'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valueSuffix: ' incidents'
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: [{
+            name: 'Active Shooter',
+            data: [0.2, 0.3, 0.3, 0.2, 0.5, 0.4, 0.2, 0.24, 0.23, 0.4, 0.54, 0.32]
+        }, {
+            name: 'Explosion',
+            data: [0.01, 0.017, 0.01, 0.02, 0.011, 0.021, 0.013, 0.01, 0.008, 0.013, 0.012, 0.01]
+        }, {
+            name: 'Biohazard',
+            data: [0.39, 0.32, 0.37, 0.29, 0.22, 0.42, 0.30, 0.36, 0.282, 0.343, 0.219, 0.248]
+        }, {
+            name: 'Gas Leakage',
+            data: [4.9, 5.2, 5.7, 3.9, 4.2, 5.2, 4.0, 3.6, 4.2, 4.3, 4.6, 4.8]
+        },
+            {
+            name: 'Severe Weather',
+            data: [4.9, 4.8, 5.7, 4.9, 4.2, 5.2, 4.7, 5.6, 5.2, 6.3, 4.6, 4.8]
+        }]
+    });
+});
+</script>
+</html>
